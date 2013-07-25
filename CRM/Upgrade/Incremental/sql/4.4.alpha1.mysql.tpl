@@ -115,3 +115,5 @@ UPDATE civicrm_navigation
        name = 'Event Name Badge Layouts',
        label= '{ts escape="sql" skip="true"}Event Name Badge Layouts{/ts}'
  WHERE name = 'Event Badge Formats';
+
+INSERT INTO `civicrm_payment_processor_type` (`name`, `title`, `description`, `is_active`, `is_default`, `user_name_label`, `password_label`, `signature_label`, `subject_label`, `class_name`, `url_site_default`, `url_api_default`, `url_recur_default`, `url_button_default`, `url_site_test_default`, `url_api_test_default`, `url_recur_test_default`, `url_button_test_default`, `billing_mode`, `is_recur`, `payment_type`) VALUES ('Braintree', 'Braintree', NULL, 1, 0, 'Merchant Id', 'Public Key', 'Private Key', NULL, 'Payment_Braintree', '', '', NULL, NULL, '', '', NULL, NULL, 1, NULL, 1)
