@@ -1,31 +1,10 @@
 <?php
 /*
- +--------------------------------------------------------------------+
- | CiviCRM version 4.3                                                |
- +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2013                                |
- +--------------------------------------------------------------------+
- | This file is a part of CiviCRM.                                    |
- |                                                                    |
- | CiviCRM is free software; you can copy, modify, and distribute it  |
- | under the terms of the GNU Affero General Public License           |
- | Version 3, 19 November 2007 and the CiviCRM Licensing Exception.   |
- |                                                                    |
- | CiviCRM is distributed in the hope that it will be useful, but     |
- | WITHOUT ANY WARRANTY; without even the implied warranty of         |
- | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               |
- | See the GNU Affero General Public License for more details.        |
- |                                                                    |
- | You should have received a copy of the GNU Affero General Public   |
- | License along with this program; if not, contact CiviCRM LLC       |
- | at info[AT]civicrm[DOT]org. If you have questions about the        |
- | GNU Affero General Public License or the licensing of CiviCRM,     |
- | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
- +--------------------------------------------------------------------+
+     Online contribution test for Braintree Payment Processor
 */
 
 require_once 'CiviTest/CiviSeleniumTestCase.php';
-class WebTest_Contribute_OnlineContributionTest extends CiviSeleniumTestCase {
+class WebTest_Contribute_OnlineContributionBraintreeTest extends CiviSeleniumTestCase {
 
   protected function setUp() {
     parent::setUp();
@@ -33,10 +12,19 @@ class WebTest_Contribute_OnlineContributionTest extends CiviSeleniumTestCase {
 
   function testOnlineContributionAdd() {
     $this->webtestLogin();
-
+   
     // We need a payment processor
-    $processorName = "Webtest Dummy" . substr(sha1(rand()), 0, 7);
-    $processorType = 'Dummy';
+    $processorName = "Webtest Braintree" . substr(sha1(rand()), 0, 7);
+    $processorType = 'Braintree';
+    $processorSettings = array(
+        'test_user_name' => 'qvtn6yk594nbxsyw',
+        'test_password' => 'g55wdxm36pb8yy5m',
+        'test_signature' => 'b92f264fd7b17d0f01893ff52777135c',
+        'user_name' => 'qvtn6yk594nbxsyw',
+        'password' => 'g55wdxm36pb8yy5m',
+        'signature' => 'b92f264fd7b17d0f01893ff52777135c',
+    );
+    $this->webtestAddPaymentProcessor($processorName,$processorType,$processorSettings);
     $pageTitle = substr(sha1(rand()), 0, 7);
     $rand = 2 * rand(10, 50);
     $hash = substr(sha1(rand()), 0, 7);
@@ -53,7 +41,7 @@ class WebTest_Contribute_OnlineContributionTest extends CiviSeleniumTestCase {
     $widget = FALSE;
     $pcp = FALSE;
     $memPriceSetId = NULL;
-
+    $isAddPaymentProcessor = FALSE;
     // create a new online contribution page
     // create contribution page with randomized title and default params
     $pageId = $this->webtestAddContributionPage($hash,
@@ -72,7 +60,8 @@ class WebTest_Contribute_OnlineContributionTest extends CiviSeleniumTestCase {
       $profilePostId,
       $premiums,
       $widget,
-      $pcp
+      $pcp,
+      $isAddPaymentProcessor
     );
 
     //logout
